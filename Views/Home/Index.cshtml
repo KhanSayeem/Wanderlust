@@ -1,0 +1,48 @@
+﻿@model IEnumerable<TourismApp.Models.TourPackage>
+@{
+    ViewData["Title"] = "Home";
+}
+<h2>Group Members</h2>
+<table class="table table-bordered table-sm">
+  <thead class="table-light">
+    <tr><th>Student ID</th><th>Full Name</th></tr>
+  </thead>
+  <tbody>
+    <!-- TODO: replace with your real info -->
+    <tr><td>SID-A</td><td>Member A</td></tr>
+    <tr><td>SID-B</td><td>Member B</td></tr>
+    <tr><td>SID-C</td><td>Member C</td></tr>
+  </tbody>
+</table>
+
+<h2 class="mt-4">Popular / Recent Tours</h2>
+@if (Model == null || !Model.Any())
+{
+  <div class="alert alert-info">No tours yet. Go to Browse Tours to see everything.</div>
+}
+else
+{
+  <div class="row g-3">
+    @foreach (var t in Model)
+    {
+      <div class="col-md-4">
+        <div class="card h-100">
+          <img src="@(string.IsNullOrWhiteSpace(t.ImagePath) 
+              ? Url.Content("~/images/placeholder.jpg") 
+              : Url.Content(t.ImagePath))"
+                asp-append-version="true"
+                class="card-img-top"
+                alt="tour" />
+
+          <div class="card-body">
+            <h5 class="card-title">@t.Title</h5>
+            <p class="card-text">
+              @t.Description.Substring(0, Math.Min(120, t.Description.Length))...
+            </p>
+            <a asp-controller="Tours" asp-action="Details" asp-route-id="@t.Id" class="btn btn-primary btn-sm">View</a>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+}

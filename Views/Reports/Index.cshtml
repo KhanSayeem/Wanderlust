@@ -1,0 +1,22 @@
+@model IEnumerable<TourismApp.Controllers.ReportRow>
+@{
+  ViewData["Title"] = "Reports";
+}
+<h2>Booking Activity Report</h2>
+<table class="table table-bordered table-sm">
+  <thead class="table-light">
+    <tr><th>Package</th><th>Status</th><th>#Bookings</th><th>Participants</th><th>Revenue (Paid)</th></tr>
+  </thead>
+  <tbody>
+  @foreach (var r in Model)
+  {
+    <tr>
+      <td>@r.PackageTitle</td>
+      <td>@r.Status</td>
+      <td>@r.Bookings</td>
+      <td>@r.Participants</td>
+      <td>@r.Revenue</td>
+    </tr>
+  }
+  </tbody>
+</table>

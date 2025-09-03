@@ -1,0 +1,156 @@
+@model IEnumerable<TourismApp.Models.Booking>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "My Bookings";
+    var bookingsByStatus = Model.GroupBy(b => b.Status).ToList();
+    var totalBookings = Model.Count();
+    var upcomingBookings = Model.Count(b => b.Status == TourismApp.Models.BookingStatus.Pending || b.Status == TourismApp.Models.BookingStatus.Confirmed);
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="fas fa-calendar-check me-2"></i>My Bookings</h2>
+    <div class="text-muted">
+        <small>@totalBookings total bookings • @upcomingBookings upcoming</small>
+    </div>
+</div>
+
+@if (TempData["Msg"] is string ok) { <div class="alert alert-success alert-dismissible fade show" role="alert">@ok<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div> }
+@if (TempData["Error"] is string err) { <div class="alert alert-danger alert-dismissible fade show" role="alert">@err<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div> }
+
+@if (!Model.Any())
+{
+    <div class="text-center py-5">
+        <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+        <h4 class="text-muted">No bookings yet</h4>
+        <p class="text-muted">Ready for your next adventure?</p>
+        <a asp-controller="Tours" asp-action="Index" class="btn btn-primary">
+            <i class="fas fa-search me-2"></i>Browse Tours
+        </a>
+    </div>
+}
+else
+{
+    <!-- Quick Stats -->
+    <div class="row mb-4">
+        @foreach (var group in bookingsByStatus)
+        {
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body py-3">
+                        <h5 class="card-title mb-1">@group.Count()</h5>
+                        <small class="text-muted">@group.Key</small>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Bookings List -->
+    <div class="card">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th><i class="fas fa-map-marker-alt me-2"></i>Tour</th>
+                            <th><i class="fas fa-calendar me-2"></i>Date</th>
+                            <th><i class="fas fa-users me-2"></i>Participants</th>
+                            <th><i class="fas fa-info-circle me-2"></i>Status</th>
+                            <th><i class="fas fa-credit-card me-2"></i>Payment</th>
+                            <th><i class="fas fa-star me-2"></i>Feedback</th>
+                            <th><i class="fas fa-cog me-2"></i>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var b in Model.OrderByDescending(x => x.CreatedAt))
+                        {
+                            <tr>
+                                <td>
+                                    <div class="fw-bold">@b.TourDate.TourPackage.Title</div>
+                                    <small class="text-muted">Booked @b.CreatedAt.ToString("MMM dd, yyyy")</small>
+                                </td>
+                                <td>
+                                    <div class="fw-bold">@b.TourDate.Date.ToString("MMM dd, yyyy")</div>
+                                    <small class="text-muted">@b.TourDate.Date.ToString("dddd")</small>
+                                </td>
+                                <td>
+                                    <span class="badge bg-light text-dark">@b.Participants @(b.Participants == 1 ? "person" : "people")</span>
+                                </td>
+                                <td>
+                                    @{
+                                        var statusClass = b.Status switch
+                                        {
+                                            TourismApp.Models.BookingStatus.Pending => "bg-warning",
+                                            TourismApp.Models.BookingStatus.Confirmed => "bg-info",
+                                            TourismApp.Models.BookingStatus.Completed => "bg-success",
+                                            TourismApp.Models.BookingStatus.Cancelled => "bg-secondary",
+                                            _ => "bg-light text-dark"
+                                        };
+                                    }
+                                    <span class="badge @statusClass">@b.Status</span>
+                                </td>
+                                <td>
+                                    @{
+                                        var paymentClass = b.PaymentStatus switch
+                                        {
+                                            TourismApp.Models.PaymentStatus.Paid => "bg-success",
+                                            TourismApp.Models.PaymentStatus.Pending => "bg-warning",
+                                            TourismApp.Models.PaymentStatus.Failed => "bg-danger",
+                                            TourismApp.Models.PaymentStatus.Refunded => "bg-info",
+                                            _ => "bg-light text-dark"
+                                        };
+                                    }
+                                    <span class="badge @paymentClass">@b.PaymentStatus</span>
+                                </td>
+                                <td>
+                                    @if (b.Status == TourismApp.Models.BookingStatus.Completed && b.Feedback == null)
+                                    {
+                                        <a asp-controller="Feedbacks" asp-action="Create" asp-route-bookingId="@b.Id" class="btn btn-outline-primary btn-sm">
+                                            <i class="fas fa-star me-1"></i>Leave Review
+                                        </a>
+                                    }
+                                    else if (b.Feedback != null)
+                                    {
+                                        <span class="badge bg-success">
+                                            <i class="fas fa-check me-1"></i>Reviewed
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">
+                                            <i class="fas fa-clock me-1"></i>Pending
+                                        </span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (b.Status == TourismApp.Models.BookingStatus.Pending || b.Status == TourismApp.Models.BookingStatus.Confirmed)
+                                    {
+                                        <form asp-action="Cancel" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to cancel this booking?');">
+                                            <input type="hidden" name="id" value="@b.Id" />
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-outline-danger btn-sm">
+                                                <i class="fas fa-times me-1"></i>Cancel
+                                            </button>
+                                        </form>
+                                    }
+                                    else if (b.Status == TourismApp.Models.BookingStatus.Cancelled)
+                                    {
+                                        <span class="text-muted">
+                                            <i class="fas fa-ban"></i>
+                                        </span>
+                                    }
+                                    else if (b.Status == TourismApp.Models.BookingStatus.Completed)
+                                    {
+                                        <span class="text-success">
+                                            <i class="fas fa-check-circle"></i>
+                                        </span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}

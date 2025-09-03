@@ -1,0 +1,21 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace TourismApp.Models;
+
+public partial class AgencyProfile
+{
+    public int Id { get; set; }
+
+    public string AgencyName { get; set; } = null!;
+
+    public string? Description { get; set; }
+
+    public string? Website { get; set; }
+
+    public string UserId { get; set; } = null!;
+
+    public virtual ICollection<TourPackage> TourPackages { get; set; } = new List<TourPackage>();
+
+    public virtual ApplicationUser User { get; set; } = null!;
+}

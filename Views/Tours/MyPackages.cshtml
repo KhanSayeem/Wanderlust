@@ -1,0 +1,31 @@
+@model IEnumerable<TourismApp.Models.TourPackage>
+@{
+  ViewData["Title"] = "My Packages";
+}
+<h2>My Packages</h2>
+@if (TempData["Msg"] is string msg)
+{
+  <div class="alert alert-success">@msg</div>
+}
+
+<p><a asp-action="Create" class="btn btn-primary btn-sm">+ New Package</a></p>
+<table class="table table-striped">
+  <thead>
+    <tr><th>Title</th><th>Price</th><th>Duration</th><th></th></tr>
+  </thead>
+  <tbody>
+  @foreach (var p in Model)
+  {
+    <tr>
+      <td>@p.Title</td>
+      <td>@p.Price</td>
+      <td>@p.DurationDays d</td>
+      <td>
+        <a asp-action="Edit" asp-route-id="@p.Id" class="btn btn-outline-secondary btn-sm">Edit</a>
+        <a asp-action="Delete" asp-route-id="@p.Id" class="btn btn-outline-danger btn-sm"
+           onclick="return confirm('Delete this package?');">Delete</a>
+      </td>
+    </tr>
+  }
+  </tbody>
+</table>

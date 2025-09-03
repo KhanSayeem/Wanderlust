@@ -1,0 +1,176 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+  color: var(--bs-secondary-color);
+  text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+  text-align: start;
+}
+
+/* Custom TourismApp Styles */
+
+/* Card hover effects */
+.card {
+  transition: box-shadow 0.15s ease-in-out;
+}
+
+.card:hover {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.1);
+}
+
+/* Status badges with better colors */
+.badge.bg-warning {
+  color: #000 !important;
+}
+
+/* Button improvements */
+.btn {
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.btn-sm {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+/* Table improvements */
+.table {
+  margin-bottom: 0;
+}
+
+.table th {
+  border-top: none;
+  font-weight: 600;
+  color: #495057;
+  font-size: 0.875rem;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(0,0,0,0.02);
+}
+
+/* Navigation improvements */
+.navbar-nav .nav-link {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin: 0 0.25rem;
+  border-radius: 6px;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.navbar-nav .nav-link:hover {
+  background-color: rgba(0,0,0,0.05);
+}
+
+/* Alert improvements */
+.alert {
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Form improvements */
+.form-control, .form-select {
+  border-radius: 6px;
+  border: 1px solid #dee2e6;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+/* Progress bar improvements */
+.progress {
+  border-radius: 10px;
+  background-color: #e9ecef;
+}
+
+.progress-bar {
+  border-radius: 10px;
+  background: linear-gradient(45deg, #007bff, #0056b3);
+}
+
+/* Empty state improvements */
+.text-center.py-5 {
+  padding: 3rem 0;
+}
+
+.text-center.py-5 i.fa-3x {
+  opacity: 0.6;
+}
+
+/* Stats cards */
+.card.text-center .card-body {
+  padding: 1rem 0.5rem;
+}
+
+/* Feedback cards */
+.blockquote {
+  padding: 0.5rem 0;
+}
+
+.blockquote-footer {
+  font-size: 0.8rem;
+}
+
+/* Profile page specific styles */
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #007bff, #0056b3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 2rem;
+  margin: 0 auto 1rem;
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+  .d-flex.justify-content-between {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .d-flex.justify-content-between > div {
+    margin-top: 0.5rem;
+  }
+  
+  .table-responsive {
+    border: none;
+  }
+  
+  .btn-sm {
+    font-size: 0.8rem;
+    padding: 0.2rem 0.5rem;
+  }
+}

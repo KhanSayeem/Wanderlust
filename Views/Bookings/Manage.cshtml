@@ -1,0 +1,111 @@
+
+@model TourismApp.Models.ViewModels.ManageBookingsVM
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using TourismApp.Models
+
+@{
+  ViewData["Title"] = "Manage Bookings";
+}
+<h2>Manage Bookings</h2>
+
+@if (TempData["Msg"] is string ok) { <div class="alert alert-success">@ok</div> }
+@if (TempData["Error"] is string err) { <div class="alert alert-danger">@err</div> }
+
+<form method="get" class="row g-2 mb-3">
+  <div class="col-md-6">
+    <label asp-for="PackageId" class="form-label">Filter by Package</label>
+    <select asp-for="PackageId" class="form-select" asp-items="Model.PackageOptions" onchange="this.form.submit()">
+      <option value="">(All packages)</option>
+    </select>
+  </div>
+</form>
+
+<div class="mb-2">
+  <strong>Total participants:</strong> @Model.TotalParticipants
+  &nbsp; | &nbsp;
+  <strong>Paid revenue:</strong> @Model.TotalRevenuePaid
+</div>
+
+<table class="table table-striped align-middle">
+  <thead>
+    <tr>
+      <th>Package</th>
+      <th>Date</th>
+      <th>Tourist</th>
+      <th>Participants</th>
+      <th>Status</th>
+      <th>Payment</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+  @foreach (var b in Model.Items)
+  {
+    <tr>
+      <td>@b.PackageTitle</td>
+      <td>@b.Date.ToString("yyyy-MM-dd")</td>
+      <td>@b.TouristEmail</td>
+      <td>@b.Participants</td>
+      <td>@b.Status</td>
+      <td>@b.PaymentStatus</td>
+      <td class="d-flex gap-1">
+
+        <!-- Status buttons -->
+        @if (b.Status == BookingStatus.Pending)
+        {
+          <form asp-action="SetStatus" method="post" class="d-inline">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="id" value="@b.Id" />
+            <input type="hidden" name="status" value="@BookingStatus.Confirmed" />
+            <button class="btn btn-outline-primary btn-sm">Confirm</button>
+          </form>
+          <form asp-action="SetStatus" method="post" class="d-inline">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="id" value="@b.Id" />
+            <input type="hidden" name="status" value="@BookingStatus.Cancelled" />
+            <button class="btn btn-outline-danger btn-sm">Cancel</button>
+          </form>
+        }
+        else if (b.Status == BookingStatus.Confirmed)
+        {
+          <form asp-action="SetStatus" method="post" class="d-inline">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="id" value="@b.Id" />
+            <input type="hidden" name="status" value="@BookingStatus.Completed" />
+            <button class="btn btn-outline-success btn-sm">Complete</button>
+          </form>
+          <form asp-action="SetStatus" method="post" class="d-inline">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="id" value="@b.Id" />
+            <input type="hidden" name="status" value="@BookingStatus.Cancelled" />
+            <button class="btn btn-outline-danger btn-sm">Cancel</button>
+          </form>
+        }
+
+        <!-- Payment buttons -->
+        @if (b.Status != BookingStatus.Cancelled)
+        {
+          <form asp-action="SetPayment" method="post" class="d-inline">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="id" value="@b.Id" />
+            <input type="hidden" name="paymentStatus" value="@PaymentStatus.Unpaid" />
+            <button class="btn btn-outline-secondary btn-sm">Unpaid</button>
+          </form>
+          <form asp-action="SetPayment" method="post" class="d-inline">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="id" value="@b.Id" />
+            <input type="hidden" name="paymentStatus" value="@PaymentStatus.Pending" />
+            <button class="btn btn-outline-warning btn-sm">Partial</button>
+          </form>
+          <form asp-action="SetPayment" method="post" class="d-inline">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="id" value="@b.Id" />
+            <input type="hidden" name="paymentStatus" value="@PaymentStatus.Paid" />
+            <button class="btn btn-outline-success btn-sm">Paid</button>
+          </form>
+        }
+      </td>
+    </tr>
+  }
+  </tbody>
+</table>

@@ -1,0 +1,43 @@
+@model TourismApp.Models.TourPackage
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<h2>@Model.Title</h2>
+<p>@Model.Description</p>
+<div><strong>Duration:</strong> @Model.DurationDays days</div>
+<div><strong>Price:</strong> @Model.Price</div>
+<div><strong>Group Limit:</strong> @Model.GroupSizeLimit</div>
+
+<h4 class="mt-3">Available Dates</h4>
+@if (!Model.TourDates.Any())
+{
+    <div class="alert alert-info">No dates yet.</div>
+}
+else
+{
+    <table class="table table-sm">
+        <thead><tr><th>Date</th><th>Capacity</th><th>Action</th></tr></thead>
+        <tbody>
+            @foreach (var d in Model.TourDates.OrderBy(x => x.Date))
+            {
+                <tr>
+                    <td>@d.Date.ToString("yyyy-MM-dd")</td>
+                    <td>@d.Capacity</td>
+                    <td>
+                        @if (User.IsInRole("Tourist"))
+                        {
+                            <form asp-controller="Bookings" asp-action="Create" method="post">
+                                <input type="hidden" name="tourDateId" value="@d.Id" />
+                                <input type="number" name="participants" class="form-control" placeholder="Participants" required />
+                                <button class="btn btn-primary btn-sm">Book</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
