@@ -1,9 +1,15 @@
 @model TourismApp.Models.ViewModels.TourPackageEditVM
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-  ViewData["Title"] = "Edit Package";
+    ViewData["Title"] = "Edit Tour Package";
 }
-<h2>Edit Package</h2>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="fas fa-edit me-2"></i>Edit Tour Package</h2>
+    <a asp-action="MyPackages" class="btn btn-outline-secondary">
+        <i class="fas fa-arrow-left"></i> Back to My Packages
+    </a>
+</div>
 
 <form asp-action="Edit" method="post">
   @Html.AntiForgeryToken()

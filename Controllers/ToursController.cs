@@ -176,12 +176,24 @@ public async Task<IActionResult> Edit(int id, TourPackageEditVM vm)
         [Authorize(Roles = "Agency")]
         public async Task<IActionResult> Delete(int id)
         {
-            var m = await _ctx.TourPackages.FindAsync(id);
-            if (m != null)
+            var uid = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+            var agency = await _ctx.AgencyProfiles.FirstOrDefaultAsync(a => a.UserId == uid);
+            if (agency == null) return Unauthorized();
+
+            var tourPackage = await _ctx.TourPackages
+                .FirstOrDefaultAsync(p => p.Id == id && p.AgencyProfileId == agency.Id);
+            
+            if (tourPackage != null)
             {
-                _ctx.TourPackages.Remove(m);
+                _ctx.TourPackages.Remove(tourPackage);
                 await _ctx.SaveChangesAsync();
+                TempData["Msg"] = "Tour package deleted successfully.";
             }
+            else
+            {
+                TempData["Error"] = "Tour package not found or you don't have permission to delete it.";
+            }
+            
             return RedirectToAction(nameof(MyPackages));
         }
     }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TourismApp.Data;
 
@@ -11,9 +12,11 @@ using TourismApp.Data;
 namespace TourismApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250904213441_EnhancedProfiles")]
+    partial class EnhancedProfiles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -327,9 +330,6 @@ namespace TourismApp.Migrations
                     b.Property<int>("TourDateId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TouristProfileId")
-                        .HasColumnType("int");
-
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -337,8 +337,6 @@ namespace TourismApp.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("TourDateId");
-
-                    b.HasIndex("TouristProfileId");
 
                     b.HasIndex("UserId");
 
@@ -422,7 +420,6 @@ namespace TourismApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
-                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Title")
@@ -578,10 +575,6 @@ namespace TourismApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TourismApp.Models.TouristProfile", null)
-                        .WithMany("Bookings")
-                        .HasForeignKey("TouristProfileId");
-
                     b.HasOne("TourismApp.Models.ApplicationUser", "User")
                         .WithMany("Bookings")
                         .HasForeignKey("UserId")
@@ -690,11 +683,6 @@ namespace TourismApp.Migrations
                     b.Navigation("TourDates");
 
                     b.Navigation("TourPackageAmenities");
-                });
-
-            modelBuilder.Entity("TourismApp.Models.TouristProfile", b =>
-                {
-                    b.Navigation("Bookings");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,31 +1,79 @@
 @model IEnumerable<TourismApp.Models.TourPackage>
 @{
-  ViewData["Title"] = "My Packages";
-}
-<h2>My Packages</h2>
-@if (TempData["Msg"] is string msg)
-{
-  <div class="alert alert-success">@msg</div>
+    ViewData["Title"] = "My Tour Packages";
 }
 
-<p><a asp-action="Create" class="btn btn-primary btn-sm">+ New Package</a></p>
-<table class="table table-striped">
-  <thead>
-    <tr><th>Title</th><th>Price</th><th>Duration</th><th></th></tr>
-  </thead>
-  <tbody>
-  @foreach (var p in Model)
-  {
-    <tr>
-      <td>@p.Title</td>
-      <td>@p.Price</td>
-      <td>@p.DurationDays d</td>
-      <td>
-        <a asp-action="Edit" asp-route-id="@p.Id" class="btn btn-outline-secondary btn-sm">Edit</a>
-        <a asp-action="Delete" asp-route-id="@p.Id" class="btn btn-outline-danger btn-sm"
-           onclick="return confirm('Delete this package?');">Delete</a>
-      </td>
-    </tr>
-  }
-  </tbody>
-</table>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="fas fa-suitcase me-2"></i>My Tour Packages</h2>
+    <a asp-action="Create" class="btn-modern-primary">
+        <i class="fas fa-plus"></i> Create New Package
+    </a>
+</div>
+
+@if (TempData["Msg"] is string msg)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle me-2"></i>@msg
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+@if (!Model.Any())
+{
+    <div class="text-center py-5">
+        <i class="fas fa-map-marked-alt fa-3x text-muted mb-3"></i>
+        <h5 class="text-muted">No tour packages yet</h5>
+        <p class="text-muted">Create your first tour package to start offering amazing travel experiences.</p>
+        <a asp-action="Create" class="btn-modern-primary mt-3">
+            <i class="fas fa-plus"></i> Create Your First Package
+        </a>
+    </div>
+}
+else
+{
+    <div class="modern-table-responsive">
+        <table class="modern-table">
+            <thead>
+                <tr>
+                    <th><i class="fas fa-tag me-1"></i>Package Title</th>
+                    <th><i class="fas fa-dollar-sign me-1"></i>Price</th>
+                    <th><i class="fas fa-calendar-alt me-1"></i>Duration</th>
+                    <th><i class="fas fa-users me-1"></i>Group Size</th>
+                    <th><i class="fas fa-cog me-1"></i>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in Model)
+                {
+                    <tr>
+                        <td>
+                            <div class="fw-bold">@p.Title</div>
+                            <small class="text-muted">@(p.Description.Length > 50 ? p.Description.Substring(0, 50) + "..." : p.Description)</small>
+                        </td>
+                        <td><span class="h6 text-success mb-0">$@p.Price</span></td>
+                        <td>
+                            <span class="badge bg-info">@p.DurationDays day@(p.DurationDays > 1 ? "s" : "")</span>
+                        </td>
+                        <td>
+                            <span class="badge bg-secondary">Max @p.GroupSizeLimit</span>
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a asp-action="Details" asp-route-id="@p.Id" class="btn btn-outline-info btn-sm" title="View Details">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a asp-action="Edit" asp-route-id="@p.Id" class="btn btn-outline-primary btn-sm" title="Edit Package">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@p.Id" class="btn btn-outline-danger btn-sm" title="Delete Package"
+                                   onclick="return confirm('Are you sure you want to delete this tour package? This action cannot be undone.');">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

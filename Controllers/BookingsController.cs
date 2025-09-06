@@ -156,7 +156,8 @@ public async Task<IActionResult> Create(int tourDateId, int participants)
     if (participants < 1)
     {
         TempData["Error"] = "Participants must be at least 1.";
-        return RedirectToAction("Details", "Tours", new { id = tourDateId });
+        var td = await _ctx.TourDates.FirstOrDefaultAsync(td => td.Id == tourDateId);
+        return RedirectToAction("Details", "Tours", new { id = td?.TourPackageId });
     }
 
     var tourDate = await _ctx.TourDates
@@ -173,7 +174,7 @@ public async Task<IActionResult> Create(int tourDateId, int participants)
     if (booked + participants > tourDate.Capacity)
     {
         TempData["Error"] = $"Not enough capacity. Available: {tourDate.Capacity - booked}.";
-        return RedirectToAction("Details", "Tours", new { id = tourDateId });
+        return RedirectToAction("Details", "Tours", new { id = tourDate.TourPackageId });
     }
 
     var uid = User.FindFirstValue(ClaimTypes.NameIdentifier)!;

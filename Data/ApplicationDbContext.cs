@@ -85,6 +85,11 @@ namespace TourismApp.Data
                 .HasOne(x => x.Amenity)
                 .WithMany(a => a.TourPackageAmenities)
                 .HasForeignKey(x => x.AmenityId);
+
+            // Configure decimal precision for Price property
+            builder.Entity<TourPackage>()
+                .Property(tp => tp.Price)
+                .HasPrecision(18, 2);
         }
     }
 }

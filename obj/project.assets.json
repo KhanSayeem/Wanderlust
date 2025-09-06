@@ -5167,11 +5167,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Hi\\Documents\\GitHub\\TourApp\\TourismApp\\TourismApp.csproj",
+      "projectUniqueName": "C:\\Users\\Hi\\Documents\\GitHub\\TouristApp\\TourismApp\\TourismApp.csproj",
       "projectName": "TourismApp",
-      "projectPath": "C:\\Users\\Hi\\Documents\\GitHub\\TourApp\\TourismApp\\TourismApp.csproj",
+      "projectPath": "C:\\Users\\Hi\\Documents\\GitHub\\TouristApp\\TourismApp\\TourismApp.csproj",
       "packagesPath": "C:\\Users\\Hi\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Hi\\Documents\\GitHub\\TourApp\\TourismApp\\obj\\",
+      "outputPath": "C:\\Users\\Hi\\Documents\\GitHub\\TouristApp\\TourismApp\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Hi\\AppData\\Roaming\\NuGet\\NuGet.Config"

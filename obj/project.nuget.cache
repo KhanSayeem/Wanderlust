@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "+Jx9hShKWNg=",
+  "dgSpecHash": "aK5liEHKIPw=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Hi\\Documents\\GitHub\\TourApp\\TourismApp\\TourismApp.csproj",
+  "projectFilePath": "C:\\Users\\Hi\\Documents\\GitHub\\TouristApp\\TourismApp\\TourismApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Hi\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\Hi\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",

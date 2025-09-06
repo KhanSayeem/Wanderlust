@@ -7,7 +7,11 @@
       "Bash(dotnet ef migrations add:*)",
       "Bash(dotnet ef database:*)",
       "Bash(taskkill:*)",
-      "Bash(\"taskkill\" \"/F\" \"/PID\" \"4896\")"
+      "Bash(\"taskkill\" \"/F\" \"/PID\" \"4896\")",
+      "Bash(tasklist:*)",
+      "Bash(powershell:*)",
+      "Bash(dotnet clean:*)",
+      "Read(//c/Users/Hi/Downloads/**)"
     ],
     "deny": [],
     "ask": []

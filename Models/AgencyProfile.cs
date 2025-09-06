@@ -13,6 +13,18 @@ public partial class AgencyProfile
 
     public string? Website { get; set; }
 
+    public string? TourGuideInfo { get; set; }
+
+    public string? ServicesOffered { get; set; }
+
+    public string? ProfileImagePath { get; set; }
+
+    public string? ContactPhone { get; set; }
+
+    public string? Address { get; set; }
+
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
     public string UserId { get; set; } = null!;
 
     public virtual ICollection<TourPackage> TourPackages { get; set; } = new List<TourPackage>();

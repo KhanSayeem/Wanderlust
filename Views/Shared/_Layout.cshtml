@@ -8,7 +8,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - TourismApp</title>
+    <title>@ViewData["Title"] - Wanderlust Travel</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -16,55 +16,116 @@
     <link rel="stylesheet" href="~/TourismApp.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TourismApp</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Tours" asp-action="Index">Browse Tours</a></li>
-                        @if (User.IsInRole("Agency"))
-                        {
-                        <li class="nav-item"><a class="nav-link" asp-controller="Tours" asp-action="MyPackages">My Packages</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Bookings" asp-action="Manage">Manage Bookings</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Feedbacks" asp-action="Agency">Customer Feedbacks</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Reports" asp-action="Index">Reports</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Profile" asp-action="Agency">My Profile</a></li>
-                        }
-                        @if (User.IsInRole("Tourist"))
-                        {
-                        <li class="nav-item"><a class="nav-link" asp-controller="Bookings" asp-action="Index">My Bookings</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Feedbacks" asp-action="Index">My Feedbacks</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Profile" asp-action="Tourist">My Profile</a></li>
-                        }
-
-                    </ul>
-                    <partial name="_LoginPartial" />
+    <header class="modern-header">
+        <nav class="modern-navbar">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <a class="brand-logo" asp-area="" asp-controller="Home" asp-action="Index">
+                            <i class="fas fa-compass me-2"></i>Wanderlust
+                        </a>
+                    </div>
+                    
+                    <button class="navbar-toggler border-0 text-white d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <div class="navbar-nav mx-auto d-lg-flex">
+                            <a class="nav-link-modern" asp-area="" asp-controller="Home" asp-action="Index">
+                                <i class="fas fa-home me-1"></i>Home
+                            </a>
+                            <a class="nav-link-modern" asp-controller="Tours" asp-action="Index">
+                                <i class="fas fa-map-marked-alt me-1"></i>Browse Tours
+                            </a>
+                            @if (User.IsInRole("Agency"))
+                            {
+                                <a class="nav-link-modern" asp-controller="Tours" asp-action="MyPackages">
+                                    <i class="fas fa-suitcase me-1"></i>My Packages
+                                </a>
+                                <a class="nav-link-modern" asp-controller="Bookings" asp-action="Manage">
+                                    <i class="fas fa-calendar-check me-1"></i>Manage Bookings
+                                </a>
+                                <a class="nav-link-modern" asp-controller="Feedbacks" asp-action="Agency">
+                                    <i class="fas fa-star me-1"></i>Customer Reviews
+                                </a>
+                                <div class="nav-item dropdown">
+                                    <a class="nav-link-modern dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                        <i class="fas fa-chart-line me-1"></i>Reports
+                                    </a>
+                                    <ul class="dropdown-menu bg-dark border-0">
+                                        <li><a class="dropdown-item text-white" asp-controller="Reports" asp-action="Index">
+                                            <i class="fas fa-chart-bar me-2"></i>Summary Reports</a></li>
+                                        <li><a class="dropdown-item text-white" asp-controller="Reports" asp-action="Detailed">
+                                            <i class="fas fa-table me-2"></i>Detailed Reports</a></li>
+                                    </ul>
+                                </div>
+                            }
+                            @if (User.IsInRole("Tourist"))
+                            {
+                                <div class="nav-item dropdown">
+                                    <a class="nav-link-modern dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                        <i class="fas fa-user me-1"></i>My Account
+                                    </a>
+                                    <ul class="dropdown-menu bg-dark border-0">
+                                        <li><a class="dropdown-item text-white" asp-controller="Bookings" asp-action="Index">
+                                            <i class="fas fa-ticket-alt me-2"></i>My Bookings</a></li>
+                                        <li><a class="dropdown-item text-white" asp-controller="Feedbacks" asp-action="Index">
+                                            <i class="fas fa-comment-alt me-2"></i>My Reviews</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item text-white" asp-controller="Profile" asp-action="Tourist">
+                                            <i class="fas fa-user-circle me-2"></i>My Profile</a></li>
+                                    </ul>
+                                </div>
+                            }
+                        </div>
+                        </div>
+                        
+                        <div class="d-flex align-items-center ms-auto">
+                            @if (User.IsInRole("Agency"))
+                            {
+                                <div class="nav-item dropdown me-3">
+                                    <a class="nav-link-modern dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                        <i class="fas fa-user-cog me-1"></i>Profile
+                                    </a>
+                                    <ul class="dropdown-menu bg-dark border-0">
+                                        <li><a class="dropdown-item text-white" asp-controller="Profile" asp-action="Agency">
+                                            <i class="fas fa-user-circle me-2"></i>My Profile</a></li>
+                                    </ul>
+                                </div>
+                            }
+                            <partial name="_LoginPartial" />
+                        </div>
+                    </div>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
+    <main>
+        @RenderBody()
+    </main>
+
+    <footer class="modern-footer">
         <div class="container">
-            &copy; 2025 - TourismApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="footer-content">
+                <div class="mb-3">
+                    <div class="brand-logo h4">
+                        <i class="fas fa-compass me-2"></i>Wanderlust
+                    </div>
+                </div>
+                <p>&copy; 2025 Wanderlust Travel. Discover the world with us.</p>
+                <div class="d-flex justify-content-center gap-3 mt-3">
+                    <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-white-50">Privacy Policy</a>
+                    <span class="text-white-50">|</span>
+                    <a href="#" class="text-white-50">Terms of Service</a>
+                    <span class="text-white-50">|</span>
+                    <a href="#" class="text-white-50">Contact Us</a>
+                </div>
+            </div>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
