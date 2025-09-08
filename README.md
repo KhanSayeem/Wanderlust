@@ -72,43 +72,46 @@ TourismApp is a full-featured tourism management platform that facilitates the e
 
 ```
 TouristApp/
-├── TourismApp/                          # Main application directory
-│   ├── Controllers/                     # MVC Controllers
-│   │   ├── HomeController.cs           # Homepage and dashboard
-│   │   ├── ToursController.cs          # Tour package management
-│   │   ├── BookingsController.cs       # Booking operations
-│   │   ├── ProfileController.cs        # User profile management
-│   │   ├── FeedbacksController.cs      # Feedback system
-│   │   └── ReportsController.cs        # Reporting functionality
-│   ├── Models/                          # Data models
-│   │   ├── ApplicationUser.cs          # Extended identity user
-│   │   ├── TourPackage.cs             # Tour package entity
-│   │   ├── Booking.cs                 # Booking entity
-│   │   ├── AgencyProfile.cs           # Agency profile data
-│   │   ├── TouristProfile.cs          # Tourist profile data
-│   │   ├── TourDate.cs                # Available tour dates
-│   │   ├── Amenity.cs                 # Tour amenities
-│   │   ├── Feedback.cs                # Customer feedback
-│   │   └── ViewModels/                # View-specific models
-│   ├── Views/                           # Razor view templates
-│   │   ├── Home/                       # Homepage views
-│   │   ├── Tours/                      # Tour-related views
-│   │   ├── Bookings/                   # Booking views
-│   │   ├── Profile/                    # Profile management views
-│   │   ├── Reports/                    # Reporting views
-│   │   └── Shared/                     # Shared layout and partials
-│   ├── Data/                           # Data access layer
-│   │   ├── ApplicationDbContext.cs     # EF Core context
-│   │   └── SeedData.cs                # Database seeding
-│   ├── Migrations/                     # EF Core migrations
-│   ├── wwwroot/                        # Static files (CSS, JS, images)
-│   ├── Areas/                          # Identity UI areas
-│   ├── Program.cs                      # Application startup
-│   ├── appsettings.json               # Configuration
-│   └── TourismApp.csproj              # Project file
-├── TourApp.sln                         # Solution file
-├── enum.cs                             # Shared enums
-└── README.md                           # This file
+├── Controllers/                        # MVC Controllers
+│   ├── HomeController.cs              # Homepage and dashboard
+│   ├── ToursController.cs             # Tour package management
+│   ├── BookingsController.cs          # Booking operations
+│   ├── ProfileController.cs           # User profile management
+│   ├── FeedbacksController.cs         # Feedback system
+│   └── ReportsController.cs           # Reporting functionality
+├── Models/                             # Data models
+│   ├── ApplicationUser.cs             # Extended identity user
+│   ├── TourPackage.cs                # Tour package entity
+│   ├── Booking.cs                    # Booking entity
+│   ├── AgencyProfile.cs              # Agency profile data
+│   ├── TouristProfile.cs             # Tourist profile data
+│   ├── TourDate.cs                   # Available tour dates
+│   ├── Amenity.cs                    # Tour amenities
+│   ├── Feedback.cs                   # Customer feedback
+│   ├── Enums.cs                      # Booking and payment status enums
+│   └── ViewModels/                   # View-specific models
+├── Views/                              # Razor view templates
+│   ├── Home/                          # Homepage views
+│   ├── Tours/                         # Tour-related views
+│   ├── Bookings/                      # Booking views
+│   ├── Profile/                       # Profile management views
+│   ├── Reports/                       # Reporting views
+│   └── Shared/                        # Shared layout and partials
+├── Data/                              # Data access layer
+│   ├── ApplicationDbContext.cs        # EF Core context
+│   └── SeedData.cs                   # Database seeding
+├── Migrations/                        # EF Core migrations
+├── wwwroot/                           # Static files (CSS, JS, images)
+├── Areas/                             # Identity UI areas
+├── bin/                               # Compiled binaries (excluded from git)
+├── obj/                               # Build artifacts (excluded from git)
+├── Program.cs                         # Application startup
+├── appsettings.json                  # Configuration
+├── appsettings.Development.json      # Development settings (excluded from git)
+├── TourismApp.csproj                 # Project file
+├── TourApp.sln                       # Solution file
+├── .gitignore                        # Git ignore rules
+└── README.md                         # This file
 ```
 
 ## Getting Started
@@ -129,10 +132,7 @@ TouristApp/
    cd TouristApp
    ```
 
-2. **Navigate to the main project directory:**
-   ```bash
-   cd TourismApp
-   ```
+2. **Stay in the project root directory** (TouristApp/)
 
 3. **Restore NuGet packages:**
    ```bash
@@ -153,7 +153,21 @@ TouristApp/
    dotnet ef database update
    ```
 
-6. **Run the application:**
+6. **Build and run the application:**
+   ```bash
+   dotnet build TourApp.sln
+   dotnet run --project TourismApp.csproj
+   ```
+   
+   **Alternative build commands:**
+   ```bash
+   # Build using solution file
+   dotnet build TourApp.sln
+   
+   # Build using project file directly
+   dotnet build TourismApp.csproj
+   ```
+   **Alternative run commands**
    ```bash
    dotnet run
    ```
@@ -261,7 +275,8 @@ public enum PaymentStatus
     Pending,
     Paid,
     Failed,
-    Refunded
+    Refunded,
+    Unpaid
 }
 ```
 

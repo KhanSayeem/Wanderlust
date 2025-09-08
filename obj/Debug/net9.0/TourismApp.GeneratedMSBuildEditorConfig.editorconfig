@@ -17,105 +17,105 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = TourismApp
 build_property.RootNamespace = TourismApp
-build_property.ProjectDir = C:\Users\Hi\Documents\GitHub\TouristApp\TourismApp\
+build_property.ProjectDir = C:\Users\Hi\Documents\GitHub\TouristApp\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\Hi\Documents\GitHub\TouristApp\TourismApp
+build_property.MSBuildProjectDirectory = C:\Users\Hi\Documents\GitHub\TouristApp
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 9.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/Hi/Documents/GitHub/TouristApp/TourismApp/Areas/Identity/Pages/_ViewStart.cshtml]
+[C:/Users/Hi/Documents/GitHub/TouristApp/Areas/Identity/Pages/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Hi/Documents/GitHub/TouristApp/TourismApp/Views/Bookings/Index.cshtml]
+[C:/Users/Hi/Documents/GitHub/TouristApp/Views/Bookings/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ3NcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Hi/Documents/GitHub/TouristApp/TourismApp/Views/Bookings/Manage.cshtml]
+[C:/Users/Hi/Documents/GitHub/TouristApp/Views/Bookings/Manage.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ3NcTWFuYWdlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Hi/Documents/GitHub/TouristApp/TourismApp/Views/Feedbacks/Agency.cshtml]
+[C:/Users/Hi/Documents/GitHub/TouristApp/Views/Feedbacks/Agency.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmVlZGJhY2tzXEFnZW5jeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Hi/Documents/GitHub/TouristApp/TourismApp/Views/Feedbacks/Create.cshtml]
+[C:/Users/Hi/Documents/GitHub/TouristApp/Views/Feedbacks/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmVlZGJhY2tzXENyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Hi/Documents/GitHub/TouristApp/TourismApp/Views/Feedbacks/Index.cshtml]
+[C:/Users/Hi/Documents/GitHub/TouristApp/Views/Feedbacks/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmVlZGJhY2tzXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Hi/Documents/GitHub/TouristApp/TourismApp/Views/Home/Index.cshtml]
+[C:/Users/Hi/Documents/GitHub/TouristApp/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Hi/Documents/GitHub/TouristApp/TourismApp/Views/Home/Privacy.cshtml]
+[C:/Users/Hi/Documents/GitHub/TouristApp/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Hi/Documents/GitHub/TouristApp/TourismApp/Views/Profile/Agency.cshtml]
+[C:/Users/Hi/Documents/GitHub/TouristApp/Views/Profile/Agency.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZmlsZVxBZ2VuY3kuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Hi/Documents/GitHub/TouristApp/TourismApp/Views/Profile/Tourist.cshtml]
+[C:/Users/Hi/Documents/GitHub/TouristApp/Views/Profile/Tourist.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZmlsZVxUb3VyaXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Hi/Documents/GitHub/TouristApp/TourismApp/Views/Reports/Detailed.cshtml]
+[C:/Users/Hi/Documents/GitHub/TouristApp/Views/Reports/Detailed.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwb3J0c1xEZXRhaWxlZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Hi/Documents/GitHub/TouristApp/TourismApp/Views/Reports/Index.cshtml]
+[C:/Users/Hi/Documents/GitHub/TouristApp/Views/Reports/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwb3J0c1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Hi/Documents/GitHub/TouristApp/TourismApp/Views/Shared/Error.cshtml]
+[C:/Users/Hi/Documents/GitHub/TouristApp/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Hi/Documents/GitHub/TouristApp/TourismApp/Views/Shared/_LoginPartial.cshtml]
+[C:/Users/Hi/Documents/GitHub/TouristApp/Views/Shared/_LoginPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Mb2dpblBhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Hi/Documents/GitHub/TouristApp/TourismApp/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/Hi/Documents/GitHub/TouristApp/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Hi/Documents/GitHub/TouristApp/TourismApp/Views/Tours/Create.cshtml]
+[C:/Users/Hi/Documents/GitHub/TouristApp/Views/Tours/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVG91cnNcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Hi/Documents/GitHub/TouristApp/TourismApp/Views/Tours/Details.cshtml]
+[C:/Users/Hi/Documents/GitHub/TouristApp/Views/Tours/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVG91cnNcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Hi/Documents/GitHub/TouristApp/TourismApp/Views/Tours/Edit.cshtml]
+[C:/Users/Hi/Documents/GitHub/TouristApp/Views/Tours/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVG91cnNcRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Hi/Documents/GitHub/TouristApp/TourismApp/Views/Tours/Index.cshtml]
+[C:/Users/Hi/Documents/GitHub/TouristApp/Views/Tours/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVG91cnNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Hi/Documents/GitHub/TouristApp/TourismApp/Views/Tours/MyPackages.cshtml]
+[C:/Users/Hi/Documents/GitHub/TouristApp/Views/Tours/MyPackages.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVG91cnNcTXlQYWNrYWdlcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Hi/Documents/GitHub/TouristApp/TourismApp/Views/_ViewImports.cshtml]
+[C:/Users/Hi/Documents/GitHub/TouristApp/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Hi/Documents/GitHub/TouristApp/TourismApp/Views/_ViewStart.cshtml]
+[C:/Users/Hi/Documents/GitHub/TouristApp/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Hi/Documents/GitHub/TouristApp/TourismApp/Views/Shared/_Layout.cshtml]
+[C:/Users/Hi/Documents/GitHub/TouristApp/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-zoc52mco64

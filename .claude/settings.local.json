@@ -11,7 +11,10 @@
       "Bash(tasklist:*)",
       "Bash(powershell:*)",
       "Bash(dotnet clean:*)",
-      "Read(//c/Users/Hi/Downloads/**)"
+      "Read(//c/Users/Hi/Downloads/**)",
+      "Bash(dotnet build:*)",
+      "Bash(rm:*)",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []
