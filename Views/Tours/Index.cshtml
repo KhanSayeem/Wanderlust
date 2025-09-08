@@ -1,0 +1,113 @@
+@model IEnumerable<TourismApp.Models.TourPackage>
+@{
+  ViewData["Title"] = "Browse Tours";
+}
+
+<div class="hero-section" style="min-height: 40vh;">
+    <div class="hero-content fade-in">
+        <h1 class="hero-title">Explore Amazing Tours</h1>
+        <p class="hero-subtitle">Find your perfect adventure from our curated collection of travel experiences</p>
+    </div>
+</div>
+
+<section class="content-section">
+    <div class="container">
+        <!-- Search Section -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-8">
+                <form method="get" class="modern-card p-4">
+                    <div class="d-flex gap-3 align-items-center">
+                        <div class="flex-grow-1">
+                            <input name="q" class="modern-form-control" 
+                                   placeholder="🔍 Search for destinations, activities, or experiences..." 
+                                   value="@Context.Request.Query["q"]" />
+                        </div>
+                        <button type="submit" class="btn-modern-primary">
+                            <i class="fas fa-search"></i> Search
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        @if (!Model.Any())
+        {
+            <div class="text-center py-5">
+                <div class="modern-alert modern-alert-info d-inline-block">
+                    <i class="fas fa-info-circle me-2"></i>
+                    No tours found matching your criteria. Try adjusting your search.
+                </div>
+            </div>
+        }
+        else
+        {
+            <!-- Results Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h3 class="section-title mb-0" style="font-size: 1.8rem;">Available Tours</h3>
+                    <p class="text-muted">@Model.Count() amazing experience@(Model.Count() != 1 ? "s" : "") waiting for you</p>
+                </div>
+                @if (User.IsInRole("Agency"))
+                {
+                    <a asp-action="Create" class="btn-modern-secondary">
+                        <i class="fas fa-plus"></i> Create New Tour
+                    </a>
+                }
+            </div>
+
+            <!-- Tours Grid -->
+            <div class="row g-4">
+                @foreach (var t in Model)
+                {
+                    <div class="col-lg-4 col-md-6">
+                        <div class="modern-card h-100 fade-in">
+                            <img src="@(string.IsNullOrWhiteSpace(t.ImagePath) 
+                                ? Url.Content("~/images/placeholder.jpg") 
+                                : Url.Content(t.ImagePath))"
+                                 asp-append-version="true"
+                                 class="modern-card-image w-100"
+                                 alt="@t.Title" />
+                            
+                            <div class="modern-card-body">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h5 class="modern-card-title mb-0">@t.Title</h5>
+                                    <span class="badge bg-info rounded-pill">@t.DurationDays day@(t.DurationDays > 1 ? "s" : "")</span>
+                                </div>
+                                
+                                <div class="mb-2">
+                                    <small class="text-muted">
+                                        <i class="fas fa-building me-1"></i>@t.AgencyProfile.AgencyName
+                                    </small>
+                                </div>
+                                
+                                <p class="modern-card-text">
+                                    @(t.Description.Length > 160 ? t.Description.Substring(0, 160) + "..." : t.Description)
+                                </p>
+                                
+                                <div class="mb-3">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div>
+                                            <span class="h5 text-primary mb-0">$@t.Price</span>
+                                            <small class="text-muted d-block">per person</small>
+                                        </div>
+                                        <div class="text-end">
+                                            <small class="text-muted">
+                                                <i class="fas fa-users me-1"></i>Max @t.GroupSizeLimit people
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-grid">
+                                    <a asp-action="Details" asp-route-id="@t.Id" class="btn-modern-primary">
+                                        <i class="fas fa-info-circle me-1"></i> View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</section>

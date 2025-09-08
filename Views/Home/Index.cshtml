@@ -1,0 +1,231 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using TourismApp.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@model IEnumerable<TourismApp.Models.TourPackage>
+@{
+    ViewData["Title"] = "Discover Your Next Adventure";
+}
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-content fade-in">
+        <h1 class="hero-title">Discover Your Next Adventure</h1>
+        <p class="hero-subtitle">
+            Explore breathtaking destinations, create unforgettable memories, and embark on journeys that will transform your perspective of the world.
+        </p>
+        <div class="hero-cta">
+            @if (SignInManager.IsSignedIn(User))
+            {
+                @if (User.IsInRole("Agency"))
+                {
+                    <a asp-controller="Tours" asp-action="Index" class="btn-modern-primary">
+                        <i class="fas fa-search"></i> Browse Tours
+                    </a>
+                    <a asp-controller="Tours" asp-action="MyPackages" class="btn-modern-secondary">
+                        <i class="fas fa-cog"></i> Manage Tours
+                    </a>
+                    <a asp-controller="Bookings" asp-action="Manage" class="btn-modern-accent">
+                        <i class="fas fa-calendar-check"></i> Manage Bookings
+                    </a>
+                    <a asp-controller="Feedbacks" asp-action="Agency" class="btn-modern-success">
+                        <i class="fas fa-star"></i> Customer Reviews
+                    </a>
+                    <a asp-controller="Reports" asp-action="Index" class="btn-modern-info">
+                        <i class="fas fa-chart-line"></i> Reports
+                    </a>
+                }
+                @if (User.IsInRole("Tourist"))
+                {
+                    <a asp-controller="Tours" asp-action="Index" class="btn-modern-primary">
+                        <i class="fas fa-search"></i> Browse Tours
+                    </a>
+                    <a asp-controller="Bookings" asp-action="Index" class="btn-modern-accent">
+                        <i class="fas fa-ticket-alt"></i> My Bookings
+                    </a>
+                    <a asp-controller="Feedbacks" asp-action="Index" class="btn-modern-success">
+                        <i class="fas fa-comment-alt"></i> My Reviews
+                    </a>
+                }
+            }
+            else
+            {
+                <a asp-controller="Tours" asp-action="Index" class="btn-modern-primary">
+                    <i class="fas fa-search"></i> Explore Tours
+                </a>
+                <a href="/Identity/Account/Register" class="btn-modern-outline">
+                    <i class="fas fa-user-plus"></i> Join Now
+                </a>
+            }
+        </div>
+        
+        @if (!SignInManager.IsSignedIn(User))
+        {
+        <div class="mt-4">
+            <p class="text-white-50">Already have an account? 
+                <a href="/Identity/Account/Login" class="text-white fw-bold">Login here</a>
+            </p>
+        </div>
+        }
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="content-section">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-md-4 slide-up">
+                <div class="modern-card h-100">
+                    <div class="modern-card-body">
+                        <div class="mb-3">
+                            <i class="fas fa-globe-americas fa-3x" style="color: var(--primary-color);"></i>
+                        </div>
+                        <h4 class="modern-card-title">Global Destinations</h4>
+                        <p class="modern-card-text">Discover amazing places around the world with our carefully curated travel packages.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 slide-up" style="animation-delay: 0.2s;">
+                <div class="modern-card h-100">
+                    <div class="modern-card-body">
+                        <div class="mb-3">
+                            <i class="fas fa-shield-alt fa-3x" style="color: var(--accent-color);"></i>
+                        </div>
+                        <h4 class="modern-card-title">Safe & Secure</h4>
+                        <p class="modern-card-text">Your safety is our priority. All our tours are conducted with the highest safety standards.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 slide-up" style="animation-delay: 0.4s;">
+                <div class="modern-card h-100">
+                    <div class="modern-card-body">
+                        <div class="mb-3">
+                            <i class="fas fa-heart fa-3x" style="color: var(--secondary-color);"></i>
+                        </div>
+                        <h4 class="modern-card-title">Memorable Experiences</h4>
+                        <p class="modern-card-text">Create lasting memories with our expertly designed travel experiences and local guides.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Popular Tours Section -->
+<section class="content-section" style="background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(10px);">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title">Popular Destinations</h2>
+            <p class="section-subtitle">Discover our most sought-after travel experiences that have captivated adventurers from around the globe.</p>
+        </div>
+
+        @if (Model == null || !Model.Any())
+        {
+            <div class="text-center py-5">
+                <div class="modern-alert modern-alert-info d-inline-block">
+                    <i class="fas fa-info-circle me-2"></i>
+                    No tours available yet. Be the first to explore our upcoming destinations!
+                </div>
+                <div class="mt-4">
+                    <a asp-controller="Tours" asp-action="Index" class="btn-modern-primary">
+                        <i class="fas fa-compass"></i> Browse All Tours
+                    </a>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="row g-4">
+                @foreach (var t in Model)
+                {
+                    <div class="col-lg-4 col-md-6">
+                        <div class="modern-card h-100 fade-in">
+                            <img src="@(string.IsNullOrWhiteSpace(t.ImagePath) 
+                                ? Url.Content("~/images/placeholder.jpg") 
+                                : Url.Content(t.ImagePath))"
+                                  asp-append-version="true"
+                                  class="modern-card-image w-100"
+                                  alt="@t.Title" />
+                            
+                            <div class="modern-card-body">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h5 class="modern-card-title mb-0">@t.Title</h5>
+                                    <span class="badge bg-primary rounded-pill">@t.DurationDays day@(t.DurationDays > 1 ? "s" : "")</span>
+                                </div>
+                                
+                                <div class="mb-2">
+                                    <small class="text-muted">
+                                        <i class="fas fa-building me-1"></i>@t.AgencyProfile.AgencyName
+                                    </small>
+                                </div>
+                                
+                                <p class="modern-card-text">
+                                    @(t.Description.Length > 120 ? t.Description.Substring(0, 120) + "..." : t.Description)
+                                </p>
+                                
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span class="h5 text-primary mb-0">$@t.Price</span>
+                                        <small class="text-muted">per person</small>
+                                    </div>
+                                    <a asp-controller="Tours" asp-action="Details" asp-route-id="@t.Id" class="btn-modern-primary">
+                                        <i class="fas fa-arrow-right"></i> Explore
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            
+            <div class="text-center mt-5">
+                <a asp-controller="Tours" asp-action="Index" class="btn-modern-outline">
+                    <i class="fas fa-th-large me-2"></i> View All Tours
+                </a>
+            </div>
+        }
+    </div>
+</section>
+
+<!-- Team Section -->
+<section class="content-section">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title">Our Development Team</h2>
+            <p class="section-subtitle">Meet the talented developers who brought this platform to life</p>
+        </div>
+        
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="modern-table-responsive">
+                    <table class="modern-table w-100">
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-id-card me-2"></i>Student ID</th>
+                                <th><i class="fas fa-user me-2"></i>Full Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>20029197</code></td>
+                                <td><strong>Farhan Sadiq</strong></td>
+                            </tr>
+                            <tr>
+                                <td><code>20031105</code></td>
+                                <td><strong>Ahanaf Sarker Durjoy</strong></td>
+                            </tr>
+                            <tr>
+                                <td><code>12301010</code></td>
+                                <td><strong>Muhammad Ayaz Latif</strong></td>
+                            </tr>
+                            <tr>
+                                <td><code>20030978</code></td>
+                                <td><strong>Muhammad Hadi</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

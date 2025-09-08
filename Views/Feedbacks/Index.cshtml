@@ -1,0 +1,155 @@
+@model IEnumerable<TourismApp.Models.Feedback>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "My Feedbacks";
+    var totalFeedbacks = Model.Count();
+    var averageRating = Model.Any() ? Model.Average(f => f.Rating) : 0;
+    var ratingGroups = Model.GroupBy(f => f.Rating).OrderByDescending(g => g.Key).ToList();
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="fas fa-star me-2"></i>My Feedbacks</h2>
+    <div class="text-muted">
+        <small>@totalFeedbacks reviews • @averageRating.ToString("F1") avg rating</small>
+    </div>
+</div>
+
+@if (TempData["Msg"] is string msg)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @msg
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+@if (!Model.Any())
+{
+    <div class="text-center py-5">
+        <i class="fas fa-comment-dots fa-3x text-muted mb-3"></i>
+        <h4 class="text-muted">No reviews yet</h4>
+        <p class="text-muted">Share your experiences with completed tours</p>
+        <a asp-controller="Bookings" asp-action="Index" class="btn btn-primary">
+            <i class="fas fa-calendar-check me-2"></i>View My Bookings
+        </a>
+    </div>
+}
+else
+{
+    <!-- Quick Stats -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body py-3">
+                    <h5 class="card-title mb-1">@totalFeedbacks</h5>
+                    <small class="text-muted">Total Reviews</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body py-3">
+                    <h5 class="card-title mb-1">@averageRating.ToString("F1") ⭐</h5>
+                    <small class="text-muted">Average Rating</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body py-3">
+                    <h5 class="card-title mb-1">@Model.Count(f => f.Rating == 5)</h5>
+                    <small class="text-muted">5-Star Reviews</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rating Distribution -->
+    @if (ratingGroups.Any())
+    {
+        <div class="card mb-4">
+            <div class="card-header">
+                <h6 class="card-title mb-0">Rating Distribution</h6>
+            </div>
+            <div class="card-body">
+                @foreach (var group in ratingGroups)
+                {
+                    var percentage = (double)group.Count() / totalFeedbacks * 100;
+                    <div class="row align-items-center mb-2">
+                        <div class="col-auto">
+                            <span class="fw-bold">@group.Key ⭐</span>
+                        </div>
+                        <div class="col">
+                            <div class="progress" style="height: 8px;">
+                                <div class="progress-bar" style="width: @percentage%"></div>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <small class="text-muted">@group.Count()</small>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+    <!-- Feedbacks List -->
+    <div class="row">
+        @foreach (var f in Model.OrderByDescending(x => x.CreatedAt))
+        {
+            <div class="col-md-12 mb-3">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title mb-0">@f.Booking.TourDate.TourPackage.Title</h6>
+                            <small class="text-muted">
+                                <i class="fas fa-calendar me-1"></i>@f.Booking.TourDate.Date.ToString("MMM dd, yyyy")
+                            </small>
+                        </div>
+                        <div class="text-end">
+                            <div class="mb-1">
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    if (i <= f.Rating)
+                                    {
+                                        <span class="text-warning">⭐</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">☆</span>
+                                    }
+                                }
+                            </div>
+                            <small class="text-muted">@f.CreatedAt.ToString("MMM dd, yyyy")</small>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        @if (!string.IsNullOrEmpty(f.Comment))
+                        {
+                            <blockquote class="blockquote mb-0">
+                                <p class="mb-2">@f.Comment</p>
+                                <footer class="blockquote-footer">
+                                    <small class="text-muted">
+                                        Your review for @f.Booking.TourDate.TourPackage.Title
+                                    </small>
+                                </footer>
+                            </blockquote>
+                        }
+                        else
+                        {
+                            <p class="text-muted mb-0">
+                                <em>No written review - rating only</em>
+                            </p>
+                        }
+                        <div class="mt-2 pt-2 border-top">
+                            <small class="text-muted">
+                                <i class="fas fa-users me-1"></i>@f.Booking.Participants @(f.Booking.Participants == 1 ? "participant" : "participants") • 
+                                <i class="fas fa-ticket-alt me-1"></i>Booking #@f.Booking.Id
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

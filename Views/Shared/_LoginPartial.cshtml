@@ -1,0 +1,42 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using TourismApp.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <!-- Logged In User -->
+    <div class="dropdown">
+        <a class="nav-link dropdown-toggle text-white d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-user-circle me-2"></i>
+            <span>@User.Identity?.Name</span>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end bg-dark border-0 shadow-lg">
+            <li>
+                <a class="dropdown-item text-white" asp-area="Identity" asp-page="/Account/Manage/Index">
+                    <i class="fas fa-cog me-2"></i>Account Settings
+                </a>
+            </li>
+            <li><hr class="dropdown-divider border-secondary"></li>
+            <li>
+                <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" class="d-inline">
+                    <button type="submit" class="dropdown-item text-white border-0 bg-transparent w-100 text-start">
+                        <i class="fas fa-sign-out-alt me-2"></i>Logout
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </div>
+}
+else
+{
+    <!-- Login buttons for logged out users - Using Bootstrap classes for guaranteed visibility -->
+    <div class="d-flex gap-2">
+        <a href="/Identity/Account/Login" class="btn btn-outline-light btn-sm">
+            <i class="fas fa-sign-in-alt me-1"></i> Login
+        </a>
+        <a href="/Identity/Account/Register" class="btn btn-primary btn-sm">
+            <i class="fas fa-user-plus me-1"></i> Sign Up
+        </a>
+    </div>
+}

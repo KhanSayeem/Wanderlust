@@ -1,0 +1,143 @@
+@model IEnumerable<TourismApp.Models.Feedback>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Customer Feedbacks";
+    var packages = ViewBag.Packages as IEnumerable<TourismApp.Models.TourPackage>;
+    var selectedPackageId = ViewBag.SelectedPackageId as int?;
+}
+
+<h2>Customer Feedbacks</h2>
+
+@if (TempData["Msg"] is string ok) { <div class="alert alert-success">@ok</div> }
+@if (TempData["Error"] is string err) { <div class="alert alert-danger">@err</div> }
+
+<div class="row mb-3">
+    <div class="col-md-4">
+        <form asp-action="Agency" method="get" id="filterForm">
+            <div class="form-group">
+                <label for="packageSelect" class="form-label">Filter by Package:</label>
+                <select name="packageId" id="packageSelect" class="form-select" onchange="document.getElementById('filterForm').submit();">
+                    <option value="">All Packages</option>
+                    @if (packages != null)
+                    {
+                        @foreach (var pkg in packages)
+                        {
+                            @if (selectedPackageId == pkg.Id)
+                            {
+                                <option value="@pkg.Id" selected>@pkg.Title</option>
+                            }
+                            else
+                            {
+                                <option value="@pkg.Id">@pkg.Title</option>
+                            }
+                        }
+                    }
+                </select>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle"></i>
+        @if (selectedPackageId.HasValue && packages != null)
+        {
+            var selectedPackage = packages.FirstOrDefault(p => p.Id == selectedPackageId);
+            if (selectedPackage != null)
+            {
+                <text>No feedbacks found for "@selectedPackage.Title" yet. Customers can leave feedback after completing their tours.</text>
+            }
+            else
+            {
+                <text>No feedbacks found for the selected package.</text>
+            }
+        }
+        else
+        {
+            <text>No feedbacks received yet for your tour packages. Customers can leave feedback after completing their tours.</text>
+        }
+    </div>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Total Reviews</h5>
+                    <h3>@Model.Count()</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Average Rating</h5>
+                    <h3>@Model.Average(f => f.Rating).ToString("F1") ⭐</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-white mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">5-Star Reviews</h5>
+                    <h3>@Model.Count(f => f.Rating == 5)</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Recent Reviews</h5>
+                    <h3>@Model.Count(f => f.CreatedAt >= DateTime.UtcNow.AddDays(-30))</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        @foreach (var feedback in Model)
+        {
+            <div class="col-md-12 mb-3">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>@feedback.Booking!.TourDate!.TourPackage!.Title</strong>
+                            <span class="badge bg-secondary ms-2">@feedback.Booking.TourDate.Date.ToString("yyyy-MM-dd")</span>
+                        </div>
+                        <div>
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                if (i <= feedback.Rating)
+                                {
+                                    <span class="text-warning">⭐</span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">☆</span>
+                                }
+                            }
+                            <small class="text-muted ms-2">@feedback.CreatedAt.ToString("MMM dd, yyyy")</small>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        @if (!string.IsNullOrEmpty(feedback.Comment))
+                        {
+                            <p class="card-text">@feedback.Comment</p>
+                        }
+                        else
+                        {
+                            <p class="card-text text-muted"><em>No comment provided</em></p>
+                        }
+                        <small class="text-muted">
+                            By: @feedback.Booking.User!.Email | 
+                            Participants: @feedback.Booking.Participants
+                        </small>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

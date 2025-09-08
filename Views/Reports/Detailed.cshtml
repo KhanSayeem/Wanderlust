@@ -1,0 +1,169 @@
+@model IEnumerable<TourismApp.Controllers.DetailedReportRow>
+@using TourismApp.Models
+@{
+    ViewData["Title"] = "Detailed Reports";
+    var totalBookings = Model.Count();
+    var totalRevenue = Model.Where(b => b.PaymentStatus == PaymentStatus.Paid).Sum(b => b.TotalAmount);
+    var totalParticipants = Model.Sum(b => b.Participants);
+    var avgRating = Model.Where(b => b.Rating.HasValue).Average(b => (double?)b.Rating) ?? 0;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="fas fa-table me-2"></i>Detailed Booking Report</h2>
+    <div>
+        <a asp-action="Index" class="btn btn-outline-primary">Summary Report</a>
+        <a asp-action="Detailed" class="btn btn-primary active">Detailed Report</a>
+    </div>
+</div>
+
+<!-- Summary Stats -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body text-center">
+                <h4>@totalBookings</h4>
+                <small>Total Bookings</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-success text-white">
+            <div class="card-body text-center">
+                <h4>@totalParticipants</h4>
+                <small>Total Participants</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-info text-white">
+            <div class="card-body text-center">
+                <h4>$@totalRevenue.ToString("N2")</h4>
+                <small>Total Revenue</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-warning text-white">
+            <div class="card-body text-center">
+                <h4>@avgRating.ToString("F1") ⭐</h4>
+                <small>Avg Rating</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Detailed Table -->
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0"><i class="fas fa-list me-2"></i>All Booking Details</h5>
+    </div>
+    <div class="card-body p-0">
+        @if (!Model.Any())
+        {
+            <div class="text-center py-5">
+                <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+                <h5 class="text-muted">No bookings found</h5>
+                <p class="text-muted">Start accepting bookings to see detailed reports here.</p>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover table-striped align-middle mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th><i class="fas fa-hashtag me-1"></i>ID</th>
+                            <th><i class="fas fa-map-marked-alt me-1"></i>Package</th>
+                            <th><i class="fas fa-calendar me-1"></i>Tour Date</th>
+                            <th><i class="fas fa-user me-1"></i>Customer</th>
+                            <th><i class="fas fa-users me-1"></i>Participants</th>
+                            <th><i class="fas fa-info-circle me-1"></i>Status</th>
+                            <th><i class="fas fa-credit-card me-1"></i>Payment</th>
+                            <th><i class="fas fa-dollar-sign me-1"></i>Amount</th>
+                            <th><i class="fas fa-calendar-plus me-1"></i>Booked On</th>
+                            <th><i class="fas fa-star me-1"></i>Rating</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var b in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <span class="badge bg-secondary">#@b.BookingId</span>
+                                </td>
+                                <td>
+                                    <div class="fw-bold">@b.PackageTitle</div>
+                                </td>
+                                <td>
+                                    <div>@b.TourDate.ToString("MMM dd, yyyy")</div>
+                                    <small class="text-muted">@b.TourDate.ToString("dddd")</small>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-envelope me-2 text-muted"></i>
+                                        <small>@b.CustomerEmail</small>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-info">@b.Participants</span>
+                                </td>
+                                <td>
+                                    @{
+                                        var statusClass = b.Status switch
+                                        {
+                                            BookingStatus.Pending => "bg-warning text-dark",
+                                            BookingStatus.Confirmed => "bg-info",
+                                            BookingStatus.Completed => "bg-success",
+                                            BookingStatus.Cancelled => "bg-secondary",
+                                            _ => "bg-light text-dark"
+                                        };
+                                    }
+                                    <span class="badge @statusClass">@b.Status</span>
+                                </td>
+                                <td>
+                                    @{
+                                        var paymentClass = b.PaymentStatus switch
+                                        {
+                                            PaymentStatus.Paid => "bg-success",
+                                            PaymentStatus.Pending => "bg-warning text-dark",
+                                            PaymentStatus.Failed => "bg-danger",
+                                            PaymentStatus.Refunded => "bg-secondary",
+                                            PaymentStatus.Unpaid => "bg-light text-dark",
+                                            _ => "bg-light text-dark"
+                                        };
+                                    }
+                                    <span class="badge @paymentClass">@b.PaymentStatus</span>
+                                </td>
+                                <td>
+                                    <strong class="@(b.PaymentStatus == PaymentStatus.Paid ? "text-success" : "text-muted")">
+                                        $@b.TotalAmount.ToString("N2")
+                                    </strong>
+                                </td>
+                                <td>
+                                    <div>@b.BookingDate.ToString("MMM dd, yyyy")</div>
+                                    <small class="text-muted">@b.BookingDate.ToString("HH:mm")</small>
+                                </td>
+                                <td>
+                                    @if (b.HasFeedback && b.Rating.HasValue)
+                                    {
+                                        <div class="d-flex align-items-center">
+                                            <span class="text-warning me-1">@b.Rating.Value ⭐</span>
+                                        </div>
+                                    }
+                                    else if (b.Status == BookingStatus.Completed)
+                                    {
+                                        <small class="text-muted">No review</small>
+                                    }
+                                    else
+                                    {
+                                        <small class="text-muted">N/A</small>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

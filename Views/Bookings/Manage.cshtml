@@ -1,0 +1,244 @@
+
+@model TourismApp.Models.ViewModels.ManageBookingsVM
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using TourismApp.Models
+
+@{
+  ViewData["Title"] = "Manage Bookings";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="fas fa-calendar-check me-2"></i>Manage Customer Bookings</h2>
+    <div>
+        <a asp-controller="Reports" asp-action="Index" class="btn btn-outline-primary">
+            <i class="fas fa-chart-line me-1"></i>View Reports
+        </a>
+    </div>
+</div>
+
+@if (TempData["Msg"] is string ok) 
+{ 
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle me-2"></i>@ok
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div> 
+}
+@if (TempData["Error"] is string err) 
+{ 
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-triangle me-2"></i>@err
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div> 
+}
+
+<!-- Filter and Summary Card -->
+<div class="card mb-4">
+    <div class="card-header">
+        <h5 class="mb-0"><i class="fas fa-filter me-2"></i>Filter & Summary</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <form method="get">
+                    <div class="mb-3">
+                        <label asp-for="PackageId" class="form-label">Filter by Package:</label>
+                        <select asp-for="PackageId" class="form-select" asp-items="Model.PackageOptions" onchange="this.form.submit()">
+                            <option value="">(All packages)</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="card bg-info text-white">
+                            <div class="card-body text-center py-3">
+                                <h4 class="mb-1">@Model.TotalParticipants</h4>
+                                <small>Total Participants</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card bg-success text-white">
+                            <div class="card-body text-center py-3">
+                                <h4 class="mb-1">$@Model.TotalRevenuePaid.ToString("N0")</h4>
+                                <small>Revenue (Paid)</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bookings Table -->
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0"><i class="fas fa-list me-2"></i>Customer Bookings</h5>
+    </div>
+    <div class="card-body p-0">
+        @if (!Model.Items.Any())
+        {
+            <div class="text-center py-5">
+                <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+                <h5 class="text-muted">No bookings found</h5>
+                <p class="text-muted">Customer bookings will appear here once they start booking your tours.</p>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th><i class="fas fa-map-marked-alt me-1"></i>Package</th>
+                            <th><i class="fas fa-calendar me-1"></i>Tour Date</th>
+                            <th><i class="fas fa-user me-1"></i>Customer</th>
+                            <th><i class="fas fa-users me-1"></i>Participants</th>
+                            <th><i class="fas fa-info-circle me-1"></i>Status</th>
+                            <th><i class="fas fa-credit-card me-1"></i>Payment</th>
+                            <th><i class="fas fa-cog me-1"></i>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var b in Model.Items)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="fw-bold">@b.PackageTitle</div>
+                                </td>
+                                <td>
+                                    <div>@b.Date.ToString("MMM dd, yyyy")</div>
+                                    <small class="text-muted">@b.Date.ToString("dddd")</small>
+                                </td>
+                                <td>
+                                    <small><i class="fas fa-envelope me-1"></i>@b.TouristEmail</small>
+                                </td>
+                                <td>
+                                    <span class="badge bg-info">@b.Participants</span>
+                                </td>
+                                <td>
+                                    @{
+                                        var statusClass = b.Status switch
+                                        {
+                                            BookingStatus.Pending => "bg-warning text-dark",
+                                            BookingStatus.Confirmed => "bg-info",
+                                            BookingStatus.Completed => "bg-success",
+                                            BookingStatus.Cancelled => "bg-secondary",
+                                            _ => "bg-light text-dark"
+                                        };
+                                    }
+                                    <span class="badge @statusClass">@b.Status</span>
+                                </td>
+                                <td>
+                                    @{
+                                        var paymentClass = b.PaymentStatus switch
+                                        {
+                                            PaymentStatus.Paid => "bg-success",
+                                            PaymentStatus.Pending => "bg-warning text-dark",
+                                            PaymentStatus.Failed => "bg-danger",
+                                            PaymentStatus.Refunded => "bg-secondary",
+                                            PaymentStatus.Unpaid => "bg-light text-dark",
+                                            _ => "bg-light text-dark"
+                                        };
+                                    }
+                                    <span class="badge @paymentClass">@b.PaymentStatus</span>
+                                </td>
+                                <td>
+                                    <div class="btn-group-vertical" role="group">
+                                        <!-- Status Actions -->
+                                        @if (b.Status == BookingStatus.Pending)
+                                        {
+                                            <div class="btn-group btn-group-sm mb-1" role="group">
+                                                <form asp-action="SetStatus" method="post" class="d-inline">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="id" value="@b.Id" />
+                                                    <input type="hidden" name="status" value="@BookingStatus.Confirmed" />
+                                                    <button class="btn btn-success btn-sm" title="Confirm Booking">
+                                                        <i class="fas fa-check"></i> Confirm
+                                                    </button>
+                                                </form>
+                                                <form asp-action="SetStatus" method="post" class="d-inline">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="id" value="@b.Id" />
+                                                    <input type="hidden" name="status" value="@BookingStatus.Cancelled" />
+                                                    <button class="btn btn-danger btn-sm" title="Cancel Booking">
+                                                        <i class="fas fa-times"></i> Cancel
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        }
+                                        else if (b.Status == BookingStatus.Confirmed)
+                                        {
+                                            <div class="btn-group btn-group-sm mb-1" role="group">
+                                                <form asp-action="SetStatus" method="post" class="d-inline">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="id" value="@b.Id" />
+                                                    <input type="hidden" name="status" value="@BookingStatus.Completed" />
+                                                    <button class="btn btn-success btn-sm" title="Mark as Completed">
+                                                        <i class="fas fa-flag-checkered"></i> Complete
+                                                    </button>
+                                                </form>
+                                                <form asp-action="SetStatus" method="post" class="d-inline">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="id" value="@b.Id" />
+                                                    <input type="hidden" name="status" value="@BookingStatus.Cancelled" />
+                                                    <button class="btn btn-danger btn-sm" title="Cancel Booking">
+                                                        <i class="fas fa-times"></i> Cancel
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        }
+
+                                        <!-- Payment Actions -->
+                                        @if (b.Status != BookingStatus.Cancelled)
+                                        {
+                                            <div class="btn-group btn-group-sm" role="group">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+                                                    <i class="fas fa-credit-card"></i> Payment
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li>
+                                                        <form asp-action="SetPayment" method="post">
+                                                            @Html.AntiForgeryToken()
+                                                            <input type="hidden" name="id" value="@b.Id" />
+                                                            <input type="hidden" name="paymentStatus" value="@PaymentStatus.Paid" />
+                                                            <button class="dropdown-item text-success" type="submit">
+                                                                <i class="fas fa-check-circle me-1"></i>Mark Paid
+                                                            </button>
+                                                        </form>
+                                                    </li>
+                                                    <li>
+                                                        <form asp-action="SetPayment" method="post">
+                                                            @Html.AntiForgeryToken()
+                                                            <input type="hidden" name="id" value="@b.Id" />
+                                                            <input type="hidden" name="paymentStatus" value="@PaymentStatus.Pending" />
+                                                            <button class="dropdown-item text-warning" type="submit">
+                                                                <i class="fas fa-clock me-1"></i>Mark Pending
+                                                            </button>
+                                                        </form>
+                                                    </li>
+                                                    <li>
+                                                        <form asp-action="SetPayment" method="post">
+                                                            @Html.AntiForgeryToken()
+                                                            <input type="hidden" name="id" value="@b.Id" />
+                                                            <input type="hidden" name="paymentStatus" value="@PaymentStatus.Unpaid" />
+                                                            <button class="dropdown-item text-secondary" type="submit">
+                                                                <i class="fas fa-times-circle me-1"></i>Mark Unpaid
+                                                            </button>
+                                                        </form>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
